@@ -25,22 +25,35 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var tab_list = [
             {
                 href: Dashboard.getConfigurationPageUrl('chapters'),
-                name: 'Chapters'
+                name: '章节'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('summary'),
-                name: 'Intro Summary'
+                name: '片头摘要'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('detect'),
-                name: 'Intro Detect'
+                name: '片头检测'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('options'),
-                name: 'Options'
+                name: '选项'
             }
         ];
         return tab_list;
+    }
+
+    function translateStatus(status) {
+        var map = {
+            'Complete': '已完成',
+            'Running': '运行中',
+            'Waiting': '等待中',
+            'Failed': '失败',
+            'Added': '已添加',
+            'Canceled': '已取消',
+            'Cancelled': '已取消'
+        };
+        return map[status] || status;
     }
 
     ApiClient.getApiData = function (url_to_get) {
@@ -79,7 +92,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.sendPostQuery(url, query_data).then(function (result) {
             console.log("Job creation results : " + JSON.stringify(result));
             if (result.Status === "Failed") {
-                alert("Add Job Action Failed\n" + result.Message);
+                alert("添加任务失败\n" + result.Message);
             }
             else {
                 RefreshJobs(view);
@@ -116,7 +129,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.sendPostQuery(url, query_data).then(function (result) {
             console.log("Job creation results : " + JSON.stringify(result));
             if (result.Status === "Failed") {
-                alert("Add Job Action Failed\n" + result.Message);
+                alert("添加任务失败\n" + result.Message);
             }
             else {
                 RefreshJobs(view);
@@ -145,7 +158,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var item_id = "-1";
 
         if (series_id === "-1" && season_id === "-1" && episode_id === "-1") {
-            alert("No items selected");
+            alert("未选择任何项目");
             return;
         }
         else if (series_id !== "-1" && season_id === "-1" && episode_id === "-1") {
@@ -181,7 +194,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
             }
 
             if (file_ext !== ".zip" && file_ext !== ".json") {
-                alert("File type not acceptable, needs to be (zip or json)");
+                alert("文件类型不支持，需要 zip 或 json");
                 return;
             }
 
@@ -204,7 +217,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
 
             reader.onerror = (evt) => {
                 console.log("Error loading file");
-                alert("Error loading Intro Info file");
+                alert("加载片头信息文件失败");
                 };
         }
     }
@@ -219,7 +232,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
             console.log("Series List Data: " + JSON.stringify(series_list_data));
 
             var series_list = view.querySelector("#series_list");
-            var options_html = "<option value='-1'>Select Series</option>";
+            var options_html = "<option value='-1'>选择系列</option>";
             for (const series of series_list_data) {
                 options_html += "<option value='" + series.Id + "'>" + series.Name + "</option>";
             }
@@ -235,7 +248,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
 
         var selected_series_id = series_list.options[series_list.selectedIndex].value;
         if (selected_series_id === "-1") {
-            season_list.innerHTML = "<option value='-1'>All Season</option>";
+            season_list.innerHTML = "<option value='-1'>全部季</option>";
             return;
         }
 
@@ -247,7 +260,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.getApiData(url).then(function (season_list_data) {
             console.log("Season List Data: " + JSON.stringify(season_list_data));
 
-            var options_html = "<option value='-1'>All Season</option>";
+            var options_html = "<option value='-1'>全部季</option>";
             for (const season of season_list_data) {
                 options_html += "<option value='" + season.Id + "'>" + season.Name + "</option>";
             }
@@ -266,7 +279,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var selected_season_id = season_list.options[season_list.selectedIndex].value;
 
         if (selected_season_id === "-1") {
-            episode_list.innerHTML = "<option value='-1'>All Episodes</option>";
+            episode_list.innerHTML = "<option value='-1'>全部集</option>";
             return;
         }
 
@@ -278,7 +291,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.getApiData(episode_url).then(async function (episode_list_data) {
             console.log("Episode List Data: " + JSON.stringify(episode_list_data));
 
-            var options_html = "<option value='-1'>All Episodes</option>";
+            var options_html = "<option value='-1'>全部集</option>";
             for (const episode of episode_list_data) {
                 options_html += "<option value='" + episode.Id + "'>" + episode.Name + "</option>";
             }
@@ -308,7 +321,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
     function InsertChapters(view, job_id) {
         console.log("InsertChapters : " + job_id);
 
-        if (!confirm("This will replace all existing intro chapter information with the job results!\nAre you sure?")) {
+        if (!confirm("这将用任务结果替换所有现有片头章节信息！\n确定继续吗？")) {
             return;
         }
         
@@ -319,7 +332,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
 
         ApiClient.getApiData(url).then(function (cancel_action_result) {
             console.log("Insert Chapter Result : " + JSON.stringify(cancel_action_result));
-            alert("Intro Chapters Inserted");
+            alert("片头章节已插入");
         });
     }
 
@@ -349,22 +362,22 @@ define(['mainTabsManager', 'dialogHelper'], function (
             html += '<button is="paper-icon-button-light" class="btnCancel autoSize" tabindex="-1">';
             html += '<i class="md-icon">&#xE5C4;</i>';
             html += '</button>';
-            html += '<span class="formDialogHeaderTitle" style="padding-left:20px; font-weight: bold; font-size: 120%;"> Job Item: ' + job_item_info.Name + '</span>';
+            html += '<span class="formDialogHeaderTitle" style="padding-left:20px; font-weight: bold; font-size: 120%;">任务项：' + job_item_info.Name + '</span>';
             html += '</div>';
 
             html += '<div class="formDialogContent" style="margin:10px; height: 500px;">';
             html += '<div class="dialogContentInner" style="width: 100%; overflow-y: scroll; height:485px;">';
 
-            html += '<h4>Item Result</h4>';
+            html += '<h4>项目结果</h4>';
             html += '<table style="" padding="5px">';
 
-            html += '<tr><td style="text-align: right;">Status:</td><td>' + job_item_info.Status + '</td></tr>';
+            html += '<tr><td style="text-align: right;">状态：</td><td>' + translateStatus(job_item_info.Status) + '</td></tr>';
 
-            html += '<tr><td style="text-align: right;">Extract Time:</td><td>' + job_item_info.ExtractTime + '</td></tr>';
-            html += '<tr><td style="text-align: right;">Detect Time:</td><td>' + job_item_info.DetectTime + '</td></tr>';
-            html += '<tr><td style="text-align: right;">Total Time:</td><td>' + job_item_info.TotalTime + '</td></tr>';
+            html += '<tr><td style="text-align: right;">提取耗时：</td><td>' + job_item_info.ExtractTime + '</td></tr>';
+            html += '<tr><td style="text-align: right;">检测耗时：</td><td>' + job_item_info.DetectTime + '</td></tr>';
+            html += '<tr><td style="text-align: right;">总耗时：</td><td>' + job_item_info.TotalTime + '</td></tr>';
 
-            html += '<tr><td style="text-align: right;">Found Intro:</td><td>' + job_item_info.FoundIntro + '</td></tr>';
+            html += '<tr><td style="text-align: right;">找到片头：</td><td>' + job_item_info.FoundIntro + '</td></tr>';
             
             //html += '<tr><td style="text-align: right;">Intro MD5:</td><td>' + job_item_info.IntroMD5 + '</td></tr>';
             //html += '<tr><td style="text-align: right;">Distance Sum:</td><td>' + job_item_info.DistanceSum + '</td></tr>';
@@ -378,18 +391,18 @@ define(['mainTabsManager', 'dialogHelper'], function (
 
             html += '<hr/>';
 
-            html += '<h4>All Match Results</h4>';
+            html += '<h4>全部匹配结果</h4>';
             html += '<table style="width: 100%;" padding="5px">';
             html += '<thead>';
             html += '<tr>';
-            html += '<th style="text-align: left;">Found</th>';
+            html += '<th style="text-align: left;">找到</th>';
             html += '<th style="text-align: left;">MD5</th>';
-            html += '<th style="text-align: left;">Sum</th>';
-            html += '<th style="text-align: left;">Max</th>';
-            html += '<th style="text-align: left;">Avg</th>';
-            html += '<th style="text-align: left;">Min</th>';
-            html += '<th style="text-align: left;">Threshold</th>';
-            html += '<th style="text-align: left;">Offset</th>';
+            html += '<th style="text-align: left;">总和</th>';
+            html += '<th style="text-align: left;">最大</th>';
+            html += '<th style="text-align: left;">平均</th>';
+            html += '<th style="text-align: left;">最小</th>';
+            html += '<th style="text-align: left;">阈值</th>';
+            html += '<th style="text-align: left;">偏移</th>';
             html += '</tr>';
             html += '</thead>';
 
@@ -413,8 +426,8 @@ define(['mainTabsManager', 'dialogHelper'], function (
             html += '</table>';
 
             html += '<hr/>';
-            html += '<h4>Best Match Distances</h4>';
-            html += '<canvas id="chart_canvas" width="700" height="150" style="border:1px solid #d3d3d3;">no canvas</canvas>';
+            html += '<h4>最佳匹配距离</h4>';
+            html += '<canvas id="chart_canvas" width="700" height="150" style="border:1px solid #d3d3d3;">不支持画布</canvas>';
 
             html += '</div>';
             html += '</div>';
@@ -495,17 +508,17 @@ define(['mainTabsManager', 'dialogHelper'], function (
             const job_info_summary = view.querySelector("#job_info");
             var job_info_html = "<table>";
             //job_info_html += "<tr><td>Job Id</td><td>: " + job_info_data.Id + "</td></tr>";
-            job_info_html += "<tr><td>Status</td><td>: " + job_info_data.Status + "</td></tr>";
-            job_info_html += "<tr><td>Name</td><td>: " + job_info_data.Name + "</td></tr>";
-            job_info_html += "<tr><td>Auto Insert</td><td>: " + job_info_data.AutoInsert + "</td></tr>";
-            job_info_html += "<tr><td>Added</td><td>: " + job_info_data.Added + "</td></tr>";
-            job_info_html += "<tr><td>Finished</td><td>: " + job_info_data.Finished + "</td></tr>";
-            job_info_html += "<tr><td>Intros</td><td>: " + job_info_data.IntroCount + "</td></tr>";
+            job_info_html += "<tr><td>状态</td><td>： " + translateStatus(job_info_data.Status) + "</td></tr>";
+            job_info_html += "<tr><td>名称</td><td>： " + job_info_data.Name + "</td></tr>";
+            job_info_html += "<tr><td>自动插入</td><td>： " + (job_info_data.AutoInsert ? "是" : "否") + "</td></tr>";
+            job_info_html += "<tr><td>添加时间</td><td>： " + job_info_data.Added + "</td></tr>";
+            job_info_html += "<tr><td>完成时间</td><td>： " + job_info_data.Finished + "</td></tr>";
+            job_info_html += "<tr><td>片头数</td><td>： " + job_info_data.IntroCount + "</td></tr>";
             //job_info_html += "<tr><td>Items</td><td>: " + job_info_data.ItemCount + "</td></tr>";
-            job_info_html += "<tr><td>Threshold</td><td>: " + job_info_data.Threshold + "</td></tr>";
+            job_info_html += "<tr><td>阈值</td><td>： " + job_info_data.Threshold + "</td></tr>";
             
             //job_info_html += "<tr><td>Keep For</td><td>: " + job_info_data.KeepFor + "</td></tr>";
-            job_info_html += "<tr><td>Remove In</td><td>: " + job_info_data.RemoveIn + "</td></tr>";
+            job_info_html += "<tr><td>移除倒计时</td><td>： " + job_info_data.RemoveIn + "</td></tr>";
             job_info_html += "</table>";
             job_info_summary.innerHTML = job_info_html;
 
@@ -515,7 +528,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
             }
             if (job_info_data.Status === "Complete") {
                 var button = document.createElement("button");
-                button.appendChild(document.createTextNode("Insert Chapters"));
+                button.appendChild(document.createTextNode("插入章节"));
                 button.addEventListener("click", function () {
                     InsertChapters(view, job_info_data.Id);
                 });
@@ -540,7 +553,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                 i.style.cursor = "pointer";
                 i.style.fontSize = "22px";
                 i.className = "md-icon";
-                i.title = "True";
+                i.title = "查看";
                 i.appendChild(document.createTextNode("visibility"));
                 i.addEventListener("click", function () {
                     ShowJobItemInfo(view, job_info_data.Id, job_item.Index);
@@ -615,11 +628,11 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     i.className = "md-icon";
                     i.style.fontSize = "22px";
                     if (job_item.Found) {
-                        i.title = "True";
+                        i.title = "是";
                         i.appendChild(document.createTextNode("check"));
                     }
                     else {
-                        i.title = "False";
+                        i.title = "否";
                         i.appendChild(document.createTextNode("clear"));
                     }
                     td.appendChild(i);
@@ -720,14 +733,14 @@ define(['mainTabsManager', 'dialogHelper'], function (
                 i.className = "md-icon";
                 i.style.fontSize = "22px";
                 if (job_info.Status === "Running") {
-                    i.title = "Cancel";
+                    i.title = "取消";
                     i.appendChild(document.createTextNode("sync"));
                     i.addEventListener("click", function () {
                         CancelJob(view, job_info.Id);
                     });
                 }
                 else {
-                    i.title = "Delete";
+                    i.title = "删除";
                     i.appendChild(document.createTextNode("delete_forever"));
                     i.addEventListener("click", function () {
                         RemoveJob(view, job_info.Id);
@@ -747,7 +760,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                 tr.appendChild(td);
 
                 td = document.createElement("td");
-                td.appendChild(document.createTextNode(job_info.Status));
+                td.appendChild(document.createTextNode(translateStatus(job_info.Status)));
                 td.style.width = "75px";
                 tr.appendChild(td);
 

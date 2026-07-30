@@ -28,10 +28,10 @@ namespace ChapterApi.Tasks
 
         private readonly JobManager _jm;
 
-        string IScheduledTask.Name => "Update Intro DB";
+        string IScheduledTask.Name => "更新片头数据库";
         string IScheduledTask.Key => "ChapterApiUpdateIntroDB";
-        string IScheduledTask.Description => "Downloads the latest and reloads the Intro DB";
-        string IScheduledTask.Category => "Chapter API";
+        string IScheduledTask.Description => "下载最新数据并重新加载片头数据库";
+        string IScheduledTask.Category => "章节 API";
 
         public TaskGetLatest(
             ILogManager logger,

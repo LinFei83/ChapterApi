@@ -35,9 +35,9 @@ namespace ChapterApi
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasThumbImage, IDisposable
     {
-        public override string Name => "Chapter API";
+        public override string Name => "章节 API";
         public override Guid Id => new Guid("64d8705e-c1e2-401f-9b64-2592aebde8eb");
-        public override string Description => "View and edit chapters";
+        public override string Description => "查看与编辑章节";
         public PluginConfiguration PluginConfiguration => Configuration;
 
         private readonly ILogger _logger;

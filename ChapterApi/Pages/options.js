@@ -22,19 +22,19 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var tab_list = [
             {
                 href: Dashboard.getConfigurationPageUrl('chapters'),
-                name: 'Chapters'
+                name: '章节'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('summary'),
-                name: 'Intro Summary'
+                name: '片头摘要'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('detect'),
-                name: 'Intro Detect'
+                name: '片头检测'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('options'),
-                name: 'Options'
+                name: '选项'
             }
         ];
         return tab_list;
@@ -80,7 +80,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.getApiData(url).then(function (loaded_stats) {
             console.log("Loaded Stats Result : " + JSON.stringify(loaded_stats));
 
-            let message_string = loaded_stats.SeriesCount + " series " + loaded_stats.ItemCount + " items";
+            let message_string = loaded_stats.SeriesCount + " 个系列，" + loaded_stats.ItemCount + " 条数据";
             const loaded_intro_data_label = view.querySelector("#loaded_intro_data_label");
             loaded_intro_data_label.innerHTML = message_string;
 
@@ -148,7 +148,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     picker.close();
                     DataPathSelectedCallBack(selected, view);
                 },
-                header: "Select Intro Data Path"
+                header: "选择片头数据路径"
             });
         });
     }
@@ -171,7 +171,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.getApiData(url).then(function (reload_result) {
             console.log("ReloadIntroData Result : " + JSON.stringify(reload_result));
             PopulateSettingsPage(view);
-            alert("Intro data reloaded : " + reload_result.Result + "\n" + reload_result.Message);
+            alert("片头数据已重新加载：" + reload_result.Result + "\n" + reload_result.Message);
         });
     }
 
@@ -182,7 +182,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         ApiClient.getApiData(url).then(function (download_result) {
             console.log("DownloadIntroData Result : " + JSON.stringify(download_result));
             
-            alert("Intro data downloaded : " + download_result.Result + "\n" + download_result.Message);
+            alert("片头数据已下载：" + download_result.Result + "\n" + download_result.Message);
         });
     }
 

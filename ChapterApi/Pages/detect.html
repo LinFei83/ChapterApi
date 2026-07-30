@@ -3,7 +3,7 @@
      data-controller="__plugin/detect.js">
     <div data-role="content">
         <div class="content-primary">
-            <h3>Intro Detection Jobs</h3>
+            <h3>片头检测任务</h3>
 
             <table style="width: 100%">
                 <tr>
@@ -13,24 +13,24 @@
                                 <td>
                                     <select id="series_list"></select>
                                     <select id="season_list">
-                                        <option value='-1'>All Season</option>
+                                        <option value='-1'>全部季</option>
                                     </select>
                                     <select id="episode_list">
-                                        <option value='-1'>All Episodes</option>
+                                        <option value='-1'>全部集</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" id="chapters_auto_insert" /> Automatically insert detected intro chapters</td>
+                                <td><input type="checkbox" id="chapters_auto_insert" /> 自动插入检测到的片头章节</td>
                             </tr>
                             <tr>
                                 <td>
-                                    Into Info Data (Optional)<br />
-                                    Leave empty to use the internal Intro data DB <strong>OR</strong> select a intro info json file <input type="file" id="theme_info_file" />
+                                    片头信息数据（可选）<br />
+                                    留空则使用内置片头数据库，<strong>或</strong>选择片头信息 JSON 文件 <input type="file" id="theme_info_file" />
                                 </td>
                             </tr>
                             <tr>
-                                <td><button id="run_detection">Add Job</button></td>
+                                <td><button id="run_detection">添加任务</button></td>
                             </tr>
                         </table>
                     </td>
@@ -42,7 +42,7 @@
 
 
             <hr />
-            <button id="refresh_jobs">Refresh</button>
+            <button id="refresh_jobs">刷新</button>
 
             <table style="width:100%;">
                 <tr>
@@ -68,11 +68,11 @@
                             <thead>
                                 <tr>
                                     <th style="text-align: left; width:35px;"></th>
-                                    <th style="text-align: left;">Name</th>
-                                    <th style="text-align: left; width: 100px;">IntroStart</th>
-                                    <th style="text-align: left; width: 100px;">IntroEnd</th>
-                                    <th style="text-align: right; width: 75px;">Time</th>
-                                    <th style="text-align: center; width: 50px;">Found</th>
+                                    <th style="text-align: left;">名称</th>
+                                    <th style="text-align: left; width: 100px;">片头开始</th>
+                                    <th style="text-align: left; width: 100px;">片头结束</th>
+                                    <th style="text-align: right; width: 75px;">耗时</th>
+                                    <th style="text-align: center; width: 50px;">找到</th>
                                 </tr>
                             </thead>
                             <tbody id="job_item_list">

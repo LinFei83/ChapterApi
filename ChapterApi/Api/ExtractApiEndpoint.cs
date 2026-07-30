@@ -153,7 +153,7 @@ namespace ChapterApi
 
             if (item == null)
             {
-                string message = "Item id not valid (" + request.id + ")";
+                string message = "项目 ID 无效（" + request.id + "）";
                 responce = GetResponceObject("error.txt", "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(message));
                 return responce;
             }
@@ -162,7 +162,7 @@ namespace ChapterApi
 
             if(episode == null)
             {
-                string message = "Item id not valid episode (" + request.id + ")";
+                string message = "项目 ID 不是有效剧集（" + request.id + "）";
                 responce = GetResponceObject("error.txt", "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(message));
                 return responce;
             }
@@ -186,7 +186,7 @@ namespace ChapterApi
 
             if(provider_found == false)
             {
-                string message = "Series has no provider IDs (" + request.id + ")";
+                string message = "系列没有提供商 ID（" + request.id + "）";
                 responce = GetResponceObject("error.txt", "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(message));
                 return responce;
             }
@@ -210,7 +210,7 @@ namespace ChapterApi
 
             if(intro_start == null || intro_end == null)
             {
-                string message = "Episode has no IntroStart or IntroEnd chapter markers (" + request.id + ")";
+                string message = "剧集没有片头开始或片头结束章节标记（" + request.id + "）";
                 responce = GetResponceObject("error.txt", "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(message));
                 return responce;
             }
@@ -218,7 +218,7 @@ namespace ChapterApi
             long intro_duration = (intro_end.Value - intro_start.Value) / 10000000;
             if (intro_duration < 5 || intro_duration > 300)
             {
-                string message = "Episode Intro duration is not valid " + intro_duration + " (" + request.id + ")";
+                string message = "剧集片头时长无效 " + intro_duration + "（" + request.id + "）";
                 responce = GetResponceObject("error.txt", "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(message));
                 return responce;
             }
@@ -261,7 +261,7 @@ namespace ChapterApi
 
                 if (result != 0)
                 {
-                    string message = "Error extracting chromaprint data " + result + " (" + request.id + ")";
+                    string message = "提取 Chromaprint 数据出错 " + result + "（" + request.id + "）";
                     responce = GetResponceObject("error.txt", "text/html; charset=UTF-8", Encoding.UTF8.GetBytes(message));
                     return responce;
                 }

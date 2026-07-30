@@ -614,7 +614,7 @@ namespace ChapterApi
             if(intro_cp_info_items.Count == 0)
             {
                 add_result.Add("Status", "Failed");
-                add_result.Add("Message", "No intro info data available from submitted files or Intro DB");
+                add_result.Add("Message", "提交的文件或片头数据库中没有可用的片头信息数据");
                 return add_result;
             }
 
@@ -643,7 +643,7 @@ namespace ChapterApi
                 if (intro_data.cp_data_md5 != cp_md5_string)
                 {
                     add_result.Add("Status", "Failed");
-                    add_result.Add("Message", "Mismatch on Intro MD5 : " + intro_data.cp_data_md5);
+                    add_result.Add("Message", "片头 MD5 不匹配：" + intro_data.cp_data_md5);
                     return add_result;
                 }
             }
@@ -763,7 +763,7 @@ namespace ChapterApi
             if(di.Exists == false)
             {
                 reload_result.Add("Result", "Failed");
-                reload_result.Add("Message", "Data directory does not exist");
+                reload_result.Add("Message", "数据目录不存在");
                 return reload_result;
             }
 
@@ -784,7 +784,7 @@ namespace ChapterApi
             }
 
             reload_result.Add("Result", "OK");
-            reload_result.Add("Message", series_count + " series " + item_count + " items");
+            reload_result.Add("Message", series_count + " 个系列，" + item_count + " 条数据");
             return reload_result;
         }
 
@@ -797,14 +797,14 @@ namespace ChapterApi
             if(!di.Exists)
             {
                 download_result.Add("Result", "Failed");
-                download_result.Add("Message", "Local data path does not exist");
+                download_result.Add("Message", "本地数据路径不存在");
                 return download_result;
             }
 
             if(string.IsNullOrEmpty(config.IntroDataExternalUrl))
             {
                 download_result.Add("Result", "Failed");
-                download_result.Add("Message", "Data Url not set");
+                download_result.Add("Message", "未设置数据 URL");
                 return download_result;
             }
 
@@ -833,7 +833,7 @@ namespace ChapterApi
             if (!fi.Exists)
             {
                 download_result.Add("Result", "Failed");
-                download_result.Add("Message", "File not downloaded");
+                download_result.Add("Message", "文件未下载成功");
                 return download_result;
             }
 
@@ -847,7 +847,7 @@ namespace ChapterApi
             fi.MoveTo(nfi.FullName);
 
             nfi = new FileInfo(local_path);
-            string message = "Downloaded : theme_service_data.zip (" + nfi.Length + ")";
+            string message = "已下载：theme_service_data.zip（" + nfi.Length + "）";
 
             download_result.Add("Result", "OK");
             download_result.Add("Message", message);

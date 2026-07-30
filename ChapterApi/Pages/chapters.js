@@ -24,22 +24,43 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var tab_list = [
             {
                 href: Dashboard.getConfigurationPageUrl('chapters'),
-                name: 'Chapters'
+                name: '章节'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('summary'),
-                name: 'Intro Summary'
+                name: '片头摘要'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('detect'),
-                name: 'Intro Detect'
+                name: '片头检测'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('options'),
-                name: 'Options'
+                name: '选项'
             }
         ];
         return tab_list;
+    }
+
+    function translateMarkerType(markerType) {
+        var map = {
+            'Chapter': '章节',
+            'IntroStart': '片头开始',
+            'IntroEnd': '片头结束',
+            'CreditsStart': '片尾开始'
+        };
+        return map[markerType] || markerType;
+    }
+
+    function translateItemType(itemType) {
+        var map = {
+            'Movie': '电影',
+            'Episode': '剧集',
+            'Season': '季',
+            'Series': '系列',
+            'Folder': '文件夹'
+        };
+        return map[itemType] || itemType;
     }
 
     ApiClient.getApiData = function (url_to_get) {
@@ -168,7 +189,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         html += '<button is="paper-icon-button-light" class="btnCancel autoSize" tabindex="-1">';
         html += '<i class="md-icon">&#xE5C4;</i>';
         html += '</button>';
-        html += '<h3 class="formDialogHeaderTitle">Chapter : ' + chapter_info.Name + ' (' + chapter_info.StartTime + ')</h3>';
+        html += '<h3 class="formDialogHeaderTitle">章节：' + chapter_info.Name + ' (' + chapter_info.StartTime + ')</h3>';
         html += '</div>';
 
         html += '<div class="formDialogContent" style="margin:2em;">';
@@ -199,7 +220,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var time_offset_sec = start_time_offset / ticks_per_sec;
 
         video.addEventListener("timeupdate", function () {
-            var prog_time = "Time: " + GetTimeString(this.currentTime + time_offset_sec);
+            var prog_time = "时间：" + GetTimeString(this.currentTime + time_offset_sec);
             progress.innerHTML = prog_time;
             if (chapter_start_sec < (this.currentTime + time_offset_sec)) {
                 progress.style.backgroundColor = "#00FF00";
@@ -315,11 +336,11 @@ define(['mainTabsManager', 'dialogHelper'], function (
             remove_indexes = selected.join(',');
 
             if (selected.length > 0) {
-                message = "Are you sure you want to remove (" + selected.length + ") chapters?";
+                message = "确定要删除选中的 " + selected.length + " 个章节吗？";
             }
         }
         else {
-            message = "Are you sure you want to remove this chapter?";
+            message = "确定要删除该章节吗？";
             remove_indexes = chapter_info.Index;
         }
 
@@ -369,7 +390,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                 // populate the item info
                 var display_item_info = view.querySelector('#display_item_info');
                 var item_display_info = "<h3 style='margin: 0px;'><strong>" + item_data.Name + "</strong></h3>";
-                item_display_info += item_data.ItemType + "<br>";
+                item_display_info += translateItemType(item_data.ItemType) + "<br>";
                 //item_display_info += "Item Id : " + item_data.Id + "<br>";
                 //item_display_info += "Series : " + item_data.Series + "<br>";
                 display_item_info.innerHTML = item_display_info;
@@ -439,7 +460,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     tr.appendChild(td);
 
                     td = document.createElement("td");
-                    td.appendChild(document.createTextNode(chapter.MarkerType));
+                    td.appendChild(document.createTextNode(translateMarkerType(chapter.MarkerType)));
                     td.style.padding = cell_padding;
                     tr.appendChild(td);
 
@@ -453,7 +474,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     td.style.textAlign = "center";
 
                     var i = document.createElement("i");
-                    i.title = "Delete";
+                    i.title = "删除";
                     i.className = "md-icon";
                     i.style.fontSize = "25px";
                     i.style.cursor = "pointer";
@@ -464,7 +485,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     td.appendChild(document.createTextNode("\u00A0"));
 
                     i = document.createElement("i");
-                    i.title = "Copy Time";
+                    i.title = "复制时间";
                     i.className = "md-icon";
                     i.style.fontSize = "25px";
                     i.style.cursor = "pointer";
@@ -475,7 +496,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     td.appendChild(document.createTextNode("\u00A0"));
 
                     i = document.createElement("i");
-                    i.title = "Play";
+                    i.title = "播放";
                     i.className = "md-icon";
                     i.style.fontSize = "25px";
                     i.style.cursor = "pointer";
@@ -515,7 +536,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                     td.appendChild(document.createTextNode("\u00A0"));
 
                     var delete_all = document.createElement("button");
-                    delete_all.appendChild(document.createTextNode("Delete"));
+                    delete_all.appendChild(document.createTextNode("删除"));
                     delete_all.addEventListener("click", function () { RemoveChapter(view, item_info, null);  } );
 
                     td.appendChild(delete_all);
@@ -651,7 +672,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                             link.href = export_link;
 
                             var i = document.createElement("i");
-                            i.title = "Extract Intro Chromaprint";
+                            i.title = "提取片头 Chromaprint";
                             i.className = "md-icon";
                             i.style.fontSize = "25px";
                             i.appendChild(document.createTextNode("file_download"));
@@ -668,7 +689,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
                             link.href = export_link;
 
                             i = document.createElement("i");
-                            i.title = "Extract Intro Audio";
+                            i.title = "提取片头音频";
                             i.className = "md-icon";
                             i.style.fontSize = "25px";
                             i.appendChild(document.createTextNode("volume_up"));
@@ -721,7 +742,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
 
                 var span = document.createElement("span");
                 let name = path_info.Name;
-                if (name == "Media Folders") name = "root";
+                if (name == "Media Folders") name = "根目录";
                 span.appendChild(document.createTextNode("[" + name + "]"));
                 span.style.cursor = "pointer";
 

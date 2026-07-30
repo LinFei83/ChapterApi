@@ -3,55 +3,55 @@
      data-controller="__plugin/options.js">
     <div data-role="content">
         <div class="content-primary">
-            <h3>Options</h3>
+            <h3>选项</h3>
 
             <table>
 
                 <tr>
-                    <td>Process New Episodes</td>
+                    <td>处理新增剧集</td>
                     <td>
-                        <input type="checkbox" id="process_added_items" /> Auto process episodes when they are added
+                        <input type="checkbox" id="process_added_items" /> 新增剧集时自动处理
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Process Updated Episodes</td>
+                    <td>处理更新剧集</td>
                     <td>
-                        <input type="checkbox" id="process_updated_items" /> Auto process episodes when they are updated
+                        <input type="checkbox" id="process_updated_items" /> 剧集更新时自动处理
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Detection Threshold</td>
+                    <td>检测阈值</td>
                     <td>
-                        <input type="text" id="detection_threshold" style="width:50px;" /> (default 0.5)
+                        <input type="text" id="detection_threshold" style="width:50px;" /> （默认 0.5）
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Keep finished jobs for</td>
+                    <td>完成任务保留时间</td>
                     <td>
                         <select id="keep_for">
-                            <option value="0">Dont Keep</option>
-                            <option value="1">1 Hour</option>
-                            <option value="3">3 Hours</option>
-                            <option value="6">6 Hours</option>
-                            <option value="24">24 Hours</option>
-                            <option value="48">2 Days</option>
-                            <option value="168">7 Days</option>
+                            <option value="0">不保留</option>
+                            <option value="1">1 小时</option>
+                            <option value="3">3 小时</option>
+                            <option value="6">6 小时</option>
+                            <option value="24">24 小时</option>
+                            <option value="48">2 天</option>
+                            <option value="168">7 天</option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Intro Data Local Path</td>
+                    <td>片头数据本地路径</td>
                     <td>
-                        <button id="set_intro_data_path">Set Path</button> <span id="intro_data_path_label"></span>
+                        <button id="set_intro_data_path">设置路径</button> <span id="intro_data_path_label"></span>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Intro Data External Url</td>
+                    <td>片头数据外部 URL</td>
                     <td>
                         <input type="text" id="input_data_url" style="width:500px;" />
                     </td>
@@ -60,21 +60,21 @@
                 <tr>
                     <td></td>
                     <td>
-                        <button id="download_intro_data">Download Intro Data</button> <button id="reload_intro_data">Reload Intro Data</button>
+                        <button id="download_intro_data">下载片头数据</button> <button id="reload_intro_data">重新加载片头数据</button>
                     </td>
                 </tr>
 
                 <tr>
                     <td></td>
                     <td>
-                        <h4>Intro Data Loaded</h4>
+                        <h4>已加载的片头数据</h4>
                         <span id="loaded_intro_data_label"></span>
                         <table cellpadding="4">
                             <thead>
                                 <tr>
                                     <th style="text-align: left;">Imdb</th>
-                                    <th style="text-align: left;">Series</th>
-                                    <th style="text-align: left;">Count</th>
+                                    <th style="text-align: left;">系列</th>
+                                    <th style="text-align: left;">数量</th>
                                 </tr>
                             <thead>
                             <tbody id="loaded_intro_data_list">

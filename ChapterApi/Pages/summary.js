@@ -22,19 +22,19 @@ define(['mainTabsManager', 'dialogHelper'], function (
         var tab_list = [
             {
                 href: Dashboard.getConfigurationPageUrl('chapters'),
-                name: 'Chapters'
+                name: '章节'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('summary'),
-                name: 'Intro Summary'
+                name: '片头摘要'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('detect'),
-                name: 'Intro Detect'
+                name: '片头检测'
             },
             {
                 href: Dashboard.getConfigurationPageUrl('options'),
-                name: 'Options'
+                name: '选项'
             }
         ];
         return tab_list;
@@ -68,7 +68,7 @@ define(['mainTabsManager', 'dialogHelper'], function (
 
             var loading_tr = document.createElement("tr");
             var loading_td = document.createElement("td");
-            loading_td.appendChild(document.createTextNode("Loading Data..."));
+            loading_td.appendChild(document.createTextNode("正在加载数据..."));
             loading_td.colSpan = "5";
             loading_tr.appendChild(loading_td);
             series_summary_table.appendChild(loading_tr);
